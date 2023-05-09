@@ -20,4 +20,7 @@ async def multiple(num1: int, num2: int):
 
 @app.get("/div/{num1}/{num2}")
 async def div(num1: int, num2: int):
-    return {"message": num1 / num2}
+     if num1 and num2 !=0:
+        return {"message": num1 / num2}
+    else :
+        return {"default"}
