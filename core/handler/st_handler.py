@@ -1,10 +1,10 @@
 from core.db.mongo_db import lib
 from schema.models import Book, Book_up
-# import smtplib
-# from configuration import MIMEMultipart,MIMEText
 
 
 # Create a new book
+
+
 def create_book(book: Book):
     lib.insert_one(book.dict())
     return {"message": "Book created successfully"}
@@ -20,7 +20,7 @@ def get_all_data():
     return {"details": details}
 
 
-def get_book_id(id: int):
+def get_book_id(_id: int):
     books = lib.find({})
     details = []
     for book in books:
@@ -49,34 +49,32 @@ def delete_book(book_id: int):
         return {"error": "Book not found"}
 
 
-"""for mailing"""
-
-
-# def send_email(recipient_email, subject, body):
-#     sender_email = "your_email@example.com"
-#
-#     sender_password = "your_email_password"
-#
-#     message = MIMEMultipart()
-#     message["From"] = sender_email
-#     message["To"] = recipient_email
-#     message["Subject"] = subject
-#     message.attach(MIMEText(body, "plain"))
-#
-#     with smtplib.SMTP("smtp.gmail.com", 587) as server:
-#         server.starttls()
-#         server.login(sender_email, sender_password)
-#         server.send_message(message)
-#
-#
-# def send_grouped_units_email(request: EmailRequest):
-#     result = lib.aggregate(pipeline)
-#     email_body = ""
-#
-#     for item in result:
-#         category = item["_id"]
-#         total_units = item["total_units"]
-#         email_body += f"Category: {category}, Total Units: {total_units}\n"
-#
-#     send_email(request.recipient_email, request.subject, email_body)
-#     return {"message": "Email sent successfully"}
+def pipeline_aggregation():
+    pipeline = [
+        {
+            '$project': {
+                '_id': 0
+            }
+        },
+        {
+            '$match': {
+                'borrowed': False
+            }
+        },
+        {
+            '$group': {
+                '_id': None,
+                'total': {
+                    '$sum': 1
+                }
+            }
+        },
+        {
+            '$project': {
+                '_id': 0
+            }
+        }
+    ]
+    data = lib.aggregate(pipeline)
+    data = list(data)
+    return {"total book in lib": data[0]['total']}

@@ -13,6 +13,3 @@ class Book_up(BaseModel):
     borrowed: bool
 
 
-# class EmailRequest(BaseModel):
-#     recipient_email: str
-#     subject: str

@@ -1,21 +1,6 @@
-from configparser import BasicInterpolation, ConfigParser
+from configparser import ConfigParser
 import sys
 import os.path
-
-
-class EnvInterpolation(BasicInterpolation):
-    """
-    Interpolation which expands environment variables in values.
-    """
-
-    def before_get(self, parser, section, option, value, defaults):
-        value = super().before_get(parser, section, option, value, defaults)
-
-        if not os.path.expandvars(value).startswith("$"):
-            return os.path.expandvars(value)
-        else:
-            return
-
 
 try:
     config = ConfigParser()
@@ -32,3 +17,8 @@ class DBConf:
     if not MONGO_URI:
         print("Error, environment variable MONGO_URI not set")
         sys.exit(1)
+
+
+class service_data():
+    port = int(config.get("SERVICE", "port"))
+    host = config.get("SERVICE", "host")
