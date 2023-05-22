@@ -12,8 +12,8 @@ class Email(BaseModel):
 
 
 def send_email(email: Email):
-    sender_email = "pratihari.11priyanka@gmail.com"
-    sender_password = "szytdjvpzmvcqlou"
+    sender_email = "prxxxxxxxxx@gmail.com"
+    sender_password = "xxxxxxxxxxxxxxxx"
     receiver_email = email.rec_email
 
     message = MIMEMultipart()
